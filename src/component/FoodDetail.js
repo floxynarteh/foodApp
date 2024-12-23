@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import styles from "./fooddetail.module.css";
+import ItemList from "./ItemList";
 
 export default function FoodDetail({ foodId }) {
   const [food, setFood] = useState({});
@@ -16,35 +18,39 @@ export default function FoodDetail({ foodId }) {
     fetchFood();
   }, [URL, foodId]);
   return (
-    <div>
+    <div className={styles.recipeCard}>
       <div>
-        Food Details {foodId}
-        {food.title}
-        <img src={food.image} alt="" />
+        {/* Food Details {foodId} */}
+        <h1 className={styles.recipeName}>{food.title}</h1>
+        <img className={styles.recipeImage} src={food.image} alt="" />
       </div>
-      <div>
+      <div className={styles.recipeDetails}>
         <span>
           <strong>⏱️ {food.readyInMinutes} Minutes</strong>
         </span>
         <span>
           <strong>🧑‍🧑‍🧒‍🧒 Serves {food.servings}</strong>
         </span>
-        <span>{food.vegetarian ? "🥕 Vegetarian" : " 🥩 Non Vegetarian"}</span>
-        <span>{food.vegan ? "🐮 Vegan" : " "} </span>
+        <span>
+          <strong>
+            {food.vegetarian ? "🥕 Vegetarian" : " 🥩 Non Vegetarian"}
+          </strong>
+        </span>
+        <span>
+          {" "}
+          <strong>{food.vegan ? "🐮 Vegan" : " "} </strong>{" "}
+        </span>
       </div>
       <div>
-        $ <span>{food.pricePerServing / 100} Per serving</span>
+        ${" "}
+        <span>
+          <strong>{food.pricePerServing / 100} Per serving</strong>
+        </span>
       </div>
-      <div>
-        <h2>Ingredients</h2>
-        {isLoading ? (
-          <p> Loading .....</p>
-        ) : (
-          food.analyzedInstructions[0].steps[0].ingredients.map((name) => (
-            <li>{name.name}</li>
-          ))
-        )}
 
+      <h2>Ingredients</h2>
+      <ItemList food={food} isLoading={isLoading} />
+      <div className={styles.recipeInstructions}>
         <h2>Instructions</h2>
         <ol>
           {isLoading ? (
